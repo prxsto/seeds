@@ -6,4 +6,4 @@ primaryColor = '#16B64E'
 headless = true
 port = $PORT
 enableCORS = false
-" > ~/.streamlit/config.toml
+" >> ~/.streamlit/config.toml
