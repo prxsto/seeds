@@ -1,4 +1,5 @@
 import os
+from re import X
 import streamlit as st
 import pandas as pd
 import pickle
@@ -175,12 +176,51 @@ def plot_scatter(x, y, color, x_axis_data, y_axis_data):
     Returns:
         fig (Plotly figure): Scatterplot showing user-selected prediction data
     """
+    if y_axis_data == 'Cost':
+        y_axis_data = 'Annual Cost ($)'
+        hover = 'Cost: $%{y}<extra></extra>'
+    if y_axis_data == 'CO2':
+        y_axis_data = 'Annual Carbon (kgCO2)'
+        hover = 'Carbon: %{y} kgCO2<extra></extra>'
+    if y_axis_data == 'EUI':
+        y_axis_data = 'EUI (kBTU/ft2)'
+        hover = 'EUI: %{y} kBTU/ft2<extra></extra>'
+    if x_axis_data == 'R-assembly':
+        x_axis_data = 'R-assembly (ft2·°F·h/BTU)'
+    if x_axis_data == 'Infiltration rate':
+        x_axis_data = 'Infiltration rate (m3/s per m2 of facade)'
+    if x_axis_data == 'Floor area':
+        x_axis_data = 'Floor area (ft2)'
+    
+    # if x_axis_data == 'Lot type':
+    #     bins = pd.interval_range(start=0, end=4)
+    #     d = dict(zip(bins, ['Corner/alley', 'Corner/no alley', 'Infill/alley', 'Infill/no alley']))
+    #     pd.cut(x, bins).map(d)
+    #     st.write(x)
+    # if x_axis_data == 'Orientation':
+    #     for i in x:
+    #         if i == 0:
+    #             i = 'N'
+    #         if i == 1:
+    #             i = 'S'
+    #         if i == 2:
+    #             i = 'E'
+    #         if i == 3:
+    #             i = 'W'
+
+    # if x_axis_data == 'Setbacks':
+    #     for i in x:
+    #         if i == 0:
+    #             i = 'Existing'
+    #         if i == 1:
+    #             i = 'Proposed'
+                           
     scatter = go.Scattergl(x=x, 
                         y=y,
                         marker_color=color,
                         text=color,
                         mode='markers',
-                    #  hovertemplate='wwr: %{wwr}, floor area: %{size}',
+                        hovertemplate=hover,
                         marker= {
                             'size': 12,
                             'colorscale': 'Viridis',
@@ -191,7 +231,8 @@ def plot_scatter(x, y, color, x_axis_data, y_axis_data):
     
     fig.update_xaxes(title_text=x_axis_data)
     fig.update_yaxes(title_text=y_axis_data)
-    
+    if x_axis_data == 'Lot type' or x_axis_data == 'Orientation' or x_axis_data == 'Setbacks':
+        fig.update_xaxes(type='category')
     fig.update_layout(hovermode='closest',
                         clickmode='event',
                         margin={'pad':10,
@@ -270,6 +311,7 @@ def web_tool(model):
     # constants
     kgCO2e = .135669
     kwh_cost = .1189
+    mshp_cop = 3.5 # average COP value of mini split heat pump systems in use in most DADUs in PNW
     
     if count >= 1:
         rounded_eui = st.session_state.results.iat[count - 1, st.session_state.results.columns.get_loc('eui_kbtu')]
@@ -286,7 +328,7 @@ def web_tool(model):
         typology = st.selectbox('DADU typology', ['1 unit, 1 story', '1 unit, 2 stories', 
                                         '2 units, 1 story'], index=0, 
                                         help='Select the number of stories and units')
-        inf_rate = infd[st.selectbox('Infiltration rate (cubic m/s?)', # double check units TODO 
+        inf_rate = infd[st.selectbox('Infiltration rate (m3/s per m2 of facade)', 
                                              ['Typical', 'Passive house'], 
                                              help='Select either standard infiltration rate or passive house (extremely tight enclosure)',
                                              index=0, key='inf')]
@@ -300,10 +342,10 @@ def web_tool(model):
                                                 key='setback')] 
         
         # sidebar sliders
-        size = st.slider('Total floor area (sqft)', 100, 1000,
+        size = st.slider('Total floor area (ft2)', 100, 1000,
                                 value=400, 
-                                help='Select the total square footage of floor (maximum floor area per Seattle code is 1000sqft)',
-                                step=10, key='sqft')
+                                help='Select the total square footage of floor (maximum floor area per Seattle code is 1000ft2)',
+                                step=10, key='ft2')
         wwr = st.slider('Window-to-wall ratio', 0.0, 0.9, 
                                 help='Window to wall ratio is the ratio between glazing (window) surface area and opaque surface area',
                                 value=.4, key='wwr')
@@ -333,7 +375,7 @@ def web_tool(model):
         surf_vol_ratio = surf_area / volume
         
         # show r-assembly value
-        # st.write('R-assembly:', str(assembly_r), '(units)') #TODO
+        st.text('R-assembly: ' + str("%.2f" % assembly_r) + '(ft2·°F·h/BTU)')
         
         # submit user prediction
         pred_1, pred_2, pred3 = st.columns([1,1,1])
@@ -358,7 +400,7 @@ def web_tool(model):
                         '1 year',
                         '5 years',
                         '10 years'],
-                value='1 month',
+                value='1 year',
                 )
             duration_num = durationd[duration]
             advanced_toggle = st.checkbox('Show dataframe',
@@ -380,13 +422,14 @@ def web_tool(model):
         pred_input = create_input_df(site, size, footprint, height, num_stories, num_units, inf_rate, orientation, wwr,
                                 setback, assembly_r, surf_vol_ratio)
 
-        eui = predict_eui(pred_input, model)
+        eui = predict_eui(pred_input, model) / mshp_cop
+        
         # convert kBTU/ft2 to kWh/m2
         eui_kwh = eui * 3.2 
         # convert kBTU/ft2 to kWh, then multiply by CO2 equivalent of grid (Seattle)
         co2 = eui_kwh * size * 0.09290304 * kgCO2e 
-        # convert kBTU/ft2 to kWh, then multiply by average cost per kWh (Seattle), then divide by a COP of 3.5 (MSHP)
-        cost = eui_kwh * size * 0.09290304 * kwh_cost / 3.5 
+        # convert kBTU/ft2 to kWh, then multiply by average cost per kWh (Seattle)
+        cost = eui_kwh * size * 0.09290304 * kwh_cost
         
         rounded_eui = round(float(eui), 2)
         rounded_eui_kwh = round(float(eui_kwh), 2)
@@ -417,7 +460,7 @@ def web_tool(model):
     with col1:
         
         if count == 0:
-            st.metric('Predicted EUI (annual)', None)
+            st.metric('Predicted EUI (energy use intensity)', None)
             st.write('\n' + '\n')
             st.metric('Predicted operational carbon (' + duration + ')', None)
             st.write('\n' + '\n')
@@ -427,7 +470,7 @@ def web_tool(model):
         if count == 1:
             display_co2 = round(float(rounded_co2 * duration_num), 2 )
             display_cost = round(float(rounded_cost * duration_num), 2)
-            st.metric('Predicted EUI (annual)', str(rounded_eui) + ' kBTU/sqft')
+            st.metric('Predicted EUI (energy use intensity)', str(rounded_eui) + ' kBTU/ft2')
             st.metric('Predicted operational carbon (' + duration + ')', str(display_co2) + ' kgCO2')
             st.metric('Predicted  energy cost (' + duration + ')', '$' + str(display_cost))  
             
@@ -443,7 +486,7 @@ def web_tool(model):
             d_cost = percent_change(
                 round(float(st.session_state.results.iat[count - 2, st.session_state.results.columns.get_loc('annual_cost')] * duration_num), 2), 
                 display_cost)
-            st.metric('Predicted EUI (annual)', ("%.2f" % rounded_eui) + ' kBTU/sqft', delta=("%.1f" % d_eui_kbtu) + ' %', delta_color='inverse')
+            st.metric('Predicted EUI (energy use intensity)', ("%.2f" % rounded_eui) + ' kBTU/ft2', delta=("%.1f" % d_eui_kbtu) + ' %', delta_color='inverse')
             st.metric('Predicted operational carbon (' + duration + ')', ("%.2f" % display_co2) + ' kgCO2', delta=("%.1f" % d_carbon) + ' %', delta_color='inverse')
             st.metric('Predicted  energy cost (' + duration + ')', '$' + ("%.2f" % display_cost), delta=("%.1f" % d_cost) + ' %', delta_color='inverse')  
         
@@ -451,8 +494,6 @@ def web_tool(model):
     with col2:    
         mesh = make_mesh.make_mesh(size, wwr, num_stories, num_units)
         st.plotly_chart(mesh, use_container_width=True)
-
-    # TODO allow hover to show design parameters if unable to set sliders and things to input values when result is selected
     
     with st.container():
         # st.subheader('Plot options:')
@@ -476,9 +517,6 @@ def web_tool(model):
                 x_axis_data,
                 y_axis_data
                 )
-            # fig.update_layout(
-            #     hoverdata=
-            # )
             st.plotly_chart(fig, use_container_width=True)
             
     if clear_res:
@@ -488,13 +526,13 @@ def web_tool(model):
         st.dataframe(st.session_state.results)
         
     with st.expander('Documentation'):
-        st.markdown('Source code available here: https://github.com/prxsto/msdc-thesis \n \n')
         st.markdown('How to use: \n')
         st.markdown('1. Select design parameter values in the left sidebar \n')
         st.markdown('2. Choose "Predict" to view results and visualize simple model \n')
         st.markdown('3. Compare results using scatter plot below \n')
         st.markdown('4. Click "Download results" to download a spreadsheet containing all inputs and results \n \n')
-        st.markdown('Note: energy and kgCO2 values in downloadable spreadsheet are *annual*')
+        st.markdown('Note: energy and kgCO2 values in downloadable spreadsheet are *annual* \n \n')
+        st.markdown('Questions or feedback? Open an \'issue\' here https://github.com/prxsto/dadu-predictor')
             
 st.set_page_config(layout='wide')
 
