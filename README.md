@@ -1,6 +1,6 @@
 # dadu-predictor
 
-![dadu_grid](https://user-images.githubusercontent.com/15711032/162850873-5aeda80f-4e91-4da0-9999-d08888eed040.png)
+![dadu_grid](https://user-images.githubusercontent.com/15711032/162850975-3552f1c9-fe26-4948-b1ad-d573be169326.png)
 
 Housing prices have created a crisis in the United States, stemming from policy and financial attitudes. With adapting policy being the simpler course of action, many architects and urban planners are looking to increase housing density to combat the issue of supply. However, land use policy is slow moving, so intermediate solutions are required. Allowing single family lots to contain a DADU in the rear yard helps to alleviate the density problem. Policy surrounding ADUs has begun to shift, primarily in west coast cities such as Seattle, and Los Angeles. 
 
