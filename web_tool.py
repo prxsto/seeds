@@ -455,7 +455,7 @@ def web_tool(model):
             'annual_cost': rounded_cost
         }
         outcomes = pd.DataFrame(outcomes_dict, index=[0])
-        st.session_state.results = st.session_state.results.append(outcomes, ignore_index=True)
+        st.session_state.results = st.session_state.results.concat(outcomes, ignore_index=True)
         
     with col1:
         
