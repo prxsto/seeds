@@ -1,4 +1,5 @@
 bayesian_optimization
+plotly
 scikit_learn
 shap
 tqdm
