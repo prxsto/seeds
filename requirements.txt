@@ -1,10 +1,6 @@
 bayesian_optimization
-numpy
-pandas
-plotly
 scikit_learn
 shap
-streamlit
 tqdm
 xgboost
 click
