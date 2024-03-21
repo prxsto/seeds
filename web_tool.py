@@ -56,7 +56,7 @@ durationd = {
 }
 
 # model is cached to avoid unpickling model each prediction; further, hashing is disabled per Streamlit documentation
-@st.cache(hash_funcs={xgb.core.Booster: lambda _: None})
+@st.cache_resource(hash_funcs={xgb.core.Booster: lambda _: None})
 def load_model():
     """ 
     Loads pickled xgboost model to predict EUI
@@ -66,7 +66,7 @@ def load_model():
     regressor = pickle.load(pickle_in)
     return regressor
     
-@st.cache
+@st.cache_data
 def convert_df(df):
     # IMPORTANT: Cache the conversion to prevent computation on every rerun
     return df.to_csv().encode('utf-8')
