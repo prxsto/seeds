@@ -322,7 +322,8 @@ def web_tool(model):
         """
     st.markdown(hide_collapse, unsafe_allow_html=True)
 
-    st.title("DADU Impact Predictor")
+    st.title("SEEDS")
+    st.header("Seattle Economic and Environmental Dwelling Simulator")
     col1, col2 = st.columns([1, 2])
 
     with col1:
