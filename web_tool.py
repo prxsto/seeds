@@ -692,7 +692,7 @@ def web_tool(model):
 
         if count > 0:
 
-            st.text_area(label="results",value=st.session_state.results)
+            print(st.session_state.results)
             fig = plot_scatter(
                 st.session_state.results[plotd[x_axis_data]],
                 st.session_state.results[plotd[y_axis_data]],
