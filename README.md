@@ -1,4 +1,4 @@
-# dadu-predictor
+# SEEDS - Seattle Economic and Environmental Dwelling Simulator
 
 ![dadu_grid](https://user-images.githubusercontent.com/15711032/162850975-3552f1c9-fe26-4948-b1ad-d573be169326.png)
 
