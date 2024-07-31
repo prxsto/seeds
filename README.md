@@ -12,7 +12,7 @@ Feel free to create an issue/PR if you want to see anything else implemented or 
 
 ## Background
 
-This project was developed alongside my M.S. thesis at the University of Washington, exploring accessory dwelling units as an architectural response to soaring housing prices. 
+This project was developed alongside my M.S. thesis at the University of Washington, exploring accessory dwelling units as an architectural response to soaring housing prices. Thesis paper can be found [here](https://digital.lib.washington.edu/researchworks/handle/1773/48656).
 
 ![dadu_grid](https://user-images.githubusercontent.com/15711032/162850975-3552f1c9-fe26-4948-b1ad-d573be169326.png)
 
@@ -22,4 +22,4 @@ This research involves the creation of a web-based application for predicting en
 
 ## Caveats
 
-Keep in mind this regression model was trained using a very small subset of design constraints. Results from the tool can not be evaluated for conditions which were not simulated. Web application uses cost and carbon data from 2021 (TODO: update).
+Keep in mind this regression model was trained using a very small subset of design constraints. Results from the tool can not be evaluated for conditions which were not simulated. Web application uses cost and carbon data from 2022 (TODO).
