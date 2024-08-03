@@ -577,7 +577,6 @@ def web_tool(model):
         outcomes = pd.DataFrame(outcomes_dict, index=[0])
         print(outcomes)
         st.session_state.results = pd.concat([st.session_state.results, outcomes], ignore_index=True)
-        st.session_state
 
     with col1:
 
