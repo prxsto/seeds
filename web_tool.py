@@ -711,15 +711,15 @@ def web_tool(model):
                 )
 
 
-                print(st.session_state.results)
-                fig = plot_scatter(
-                    st.session_state.results[plotd[x_axis_data]],
-                    st.session_state.results[plotd[y_axis_data]],
-                    st.session_state.results[plotd[colorby]],
-                    x_axis_data,
-                    y_axis_data,
-                )
-                st.plotly_chart(fig, use_container_width=True)
+            print(st.session_state.results)
+            fig = plot_scatter(
+                st.session_state.results[plotd[x_axis_data]],
+                st.session_state.results[plotd[y_axis_data]],
+                st.session_state.results[plotd[colorby]],
+                x_axis_data,
+                y_axis_data,
+            )
+            st.plotly_chart(fig, use_container_width=True)
 
     if clear_res:
         st.session_state.results = st.session_state.results[0:0]
