@@ -664,63 +664,63 @@ def web_tool(model):
                 delta_color="inverse",
             )
 
-    # model viewer
-    with col2:
-        mesh = make_mesh.make_mesh(size, wwr, num_stories, num_units)
-        st.plotly_chart(mesh, use_container_width=True)
+    with st.expander("Results Plot"):
+        with col2:
+            mesh = make_mesh.make_mesh(size, wwr, num_stories, num_units)
+            st.plotly_chart(mesh, use_container_width=True)
 
-    with st.container():
-        # st.subheader('Plot options:')
-        s_col1, s_col2, s_col3 = st.columns(3)
-        with s_col1:
-            x_axis_data = st.selectbox(
-                "X-axis",
-                options=[
-                    "Lot type",
-                    "Infiltration rate",
-                    "Orientation",
-                    "Setbacks",
-                    "Floor area",
-                    "WWR",
-                    "R-assembly",
-                ],
-                index=6,
-                help="Select data feature to display on X axis",
-            )
-        with s_col2:
-            y_axis_data = st.selectbox(
-                "Y-axis",
-                options=["EUI", "CO2", "Cost"],
-                index=0,
-                help="Select data feature to display on Y axis",
-            )
+        with st.container():
+            # st.subheader('Plot options:')
+            s_col1, s_col2, s_col3 = st.columns(3)
+            with s_col1:
+                x_axis_data = st.selectbox(
+                    "X-axis",
+                    options=[
+                        "Lot type",
+                        "Infiltration rate",
+                        "Orientation",
+                        "Setbacks",
+                        "Floor area",
+                        "WWR",
+                        "R-assembly",
+                    ],
+                    index=6,
+                    help="Select data feature to display on X axis",
+                )
+            with s_col2:
+                y_axis_data = st.selectbox(
+                    "Y-axis",
+                    options=["EUI", "CO2", "Cost"],
+                    index=0,
+                    help="Select data feature to display on Y axis",
+                )
 
-        with s_col3:
-            colorby = st.selectbox(
-                "Color by",
-                options=[
-                    "Lot type",
-                    "Infiltration rate",
-                    "Orientation",
-                    "Setbacks",
-                    "Floor area",
-                    "WWR",
-                    "R-assembly",
-                ],
-                help="Select data feature to color markers by",
-            )
+            with s_col3:
+                colorby = st.selectbox(
+                    "Color by",
+                    options=[
+                        "Lot type",
+                        "Infiltration rate",
+                        "Orientation",
+                        "Setbacks",
+                        "Floor area",
+                        "WWR",
+                        "R-assembly",
+                    ],
+                    help="Select data feature to color markers by",
+                )
 
-        if count > 0:
+            if count > 0:
 
-            print(st.session_state.results)
-            fig = plot_scatter(
-                st.session_state.results[plotd[x_axis_data]],
-                st.session_state.results[plotd[y_axis_data]],
-                st.session_state.results[plotd[colorby]],
-                x_axis_data,
-                y_axis_data,
-            )
-            st.plotly_chart(fig, use_container_width=True)
+                print(st.session_state.results)
+                fig = plot_scatter(
+                    st.session_state.results[plotd[x_axis_data]],
+                    st.session_state.results[plotd[y_axis_data]],
+                    st.session_state.results[plotd[colorby]],
+                    x_axis_data,
+                    y_axis_data,
+                )
+                st.plotly_chart(fig, use_container_width=True)
 
     if clear_res:
         st.session_state.results = st.session_state.results[0:0]
