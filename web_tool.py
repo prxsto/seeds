@@ -288,7 +288,9 @@ def web_tool(model):
         </style>""",
         unsafe_allow_html=True,
     )
-    # hide streamlit logo
+    st.write('<style>div.block-container{padding-top:2rem;}</style>', unsafe_allow_html=True)
+
+     # hide streamlit logo
     hide_streamlit_logo = """
         <style>
         footer {visibility: hidden;}
