@@ -324,6 +324,23 @@ def web_tool(model):
 
     st.title("SEEDS")
     st.header("Seattle Economic and Environmental Dwelling Simulator")
+    with st.expander("Documentation"):
+        st.markdown("How to use: \n")
+        st.markdown("1. Select design parameter values in the left sidebar \n")
+        st.markdown(
+            '2. Choose "Predict" to view results and visualize simple model \n'
+        )
+        st.markdown("3. Compare results using scatter plot below \n")
+        st.markdown(
+            '4. Click "Download results" to download a spreadsheet containing all inputs and results \n \n'
+        )
+        st.markdown(
+            "Note: energy and kgCO2 values in downloadable spreadsheet are *annual* \n \n"
+        )
+        st.markdown(
+            "Questions or feedback? Open an 'issue' here https://github.com/prxsto/seeds"
+        )
+
     col1, col2 = st.columns([1, 2])
 
     with col1:
@@ -710,23 +727,6 @@ def web_tool(model):
 
     if advanced_toggle:
         st.dataframe(st.session_state.results)
-
-    with st.expander("Documentation"):
-        st.markdown("How to use: \n")
-        st.markdown("1. Select design parameter values in the left sidebar \n")
-        st.markdown(
-            '2. Choose "Predict" to view results and visualize simple model \n'
-        )
-        st.markdown("3. Compare results using scatter plot below \n")
-        st.markdown(
-            '4. Click "Download results" to download a spreadsheet containing all inputs and results \n \n'
-        )
-        st.markdown(
-            "Note: energy and kgCO2 values in downloadable spreadsheet are *annual* \n \n"
-        )
-        st.markdown(
-            "Questions or feedback? Open an 'issue' here https://github.com/prxsto/dadu-predictor"
-        )
 
 
 st.set_page_config(layout="wide")
