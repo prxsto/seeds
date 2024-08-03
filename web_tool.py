@@ -279,6 +279,7 @@ def plot_scatter(x, y, color, x_axis_data, y_axis_data):
 def web_tool(model):
 
     # reduce padding above title
+    padding_top = 0;
     st.markdown(f"""
         <style>
             .reportview-container .main .block-container{{
