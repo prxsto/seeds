@@ -323,8 +323,8 @@ def web_tool(model):
     st.markdown(hide_collapse, unsafe_allow_html=True)
 
     st.title("SEEDS")
-    st.header("Seattle Economic and Environmental Dwelling Simulator")
-    with st.expander("Documentation"):
+    st.subheader("Seattle Economic and Environmental Dwelling Simulator")
+    with st.expander("Info"):
         st.markdown("How to use: \n")
         st.markdown("1. Select design parameter values in the left sidebar \n")
         st.markdown(
@@ -665,12 +665,23 @@ def web_tool(model):
 
     show_plot = len(st.session_state.results) > 0
     if show_plot:
+        st.subheader("Plot")
         with col2:
             mesh = make_mesh.make_mesh(size, wwr, num_stories, num_units)
             st.plotly_chart(mesh, use_container_width=True)
 
         with st.container():
             # st.subheader('Plot options:')
+            print(st.session_state.results)
+            fig = plot_scatter(
+                st.session_state.results[plotd[x_axis_data]],
+                st.session_state.results[plotd[y_axis_data]],
+                st.session_state.results[plotd[colorby]],
+                x_axis_data,
+                y_axis_data,
+            )
+
+            st.plotly_chart(fig, use_container_width=True)
             s_col1, s_col2, s_col3 = st.columns(3)
             with s_col1:
                 x_axis_data = st.selectbox(
@@ -711,15 +722,6 @@ def web_tool(model):
                 )
 
 
-            print(st.session_state.results)
-            fig = plot_scatter(
-                st.session_state.results[plotd[x_axis_data]],
-                st.session_state.results[plotd[y_axis_data]],
-                st.session_state.results[plotd[colorby]],
-                x_axis_data,
-                y_axis_data,
-            )
-            st.plotly_chart(fig, use_container_width=True)
 
     if clear_res:
         st.session_state.results = st.session_state.results[0:0]
