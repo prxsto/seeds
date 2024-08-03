@@ -272,6 +272,21 @@ def plot_scatter(x, y, color, x_axis_data, y_axis_data):
 
 def web_tool(model):
 
+    st.set_page_config(
+        page_title = "Seeds",
+        page_icon = ":seedling:",
+        layout = "wide"
+    )
+
+    # reduce padding above title
+    st.markdown(f"""
+        <style>
+            .reportview-container .main .block-container{{
+                padding-top: {padding_top}rem;
+            }}
+        </style>""",
+        unsafe_allow_html=True,
+    )
     # hide streamlit logo
     hide_streamlit_logo = """
         <style>
