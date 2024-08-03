@@ -9,6 +9,12 @@ import datetime
 import make_mesh
 from math import sqrt
 
+st.set_page_config(
+    page_title = "Seeds",
+    page_icon = ":seedling:",
+    layout = "wide"
+)
+
 # dictionaries to translate between user input and prediction input values
 infd = {"Typical": 0.00059, "Passive house": 0.00015}
 oriend = {"North": 1, "South": 2, "East": 3, "West": 4}
@@ -271,12 +277,6 @@ def plot_scatter(x, y, color, x_axis_data, y_axis_data):
 
 
 def web_tool(model):
-
-    st.set_page_config(
-        page_title = "Seeds",
-        page_icon = ":seedling:",
-        layout = "wide"
-    )
 
     # reduce padding above title
     st.markdown(f"""
