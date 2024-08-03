@@ -673,7 +673,6 @@ def web_tool(model):
         with st.container():
             # st.subheader('Plot options:')
 
-            st.plotly_chart(fig, use_container_width=True)
             s_col1, s_col2, s_col3 = st.columns(3)
             with s_col1:
                 x_axis_data = st.selectbox(
@@ -721,6 +720,7 @@ def web_tool(model):
                 x_axis_data,
                 y_axis_data,
             )
+            st.plotly_chart(fig, use_container_width=True)
 
     if clear_res:
         st.session_state.results = st.session_state.results[0:0]
