@@ -743,10 +743,6 @@ def web_tool(model):
     if advanced_toggle:
         st.dataframe(st.session_state.results)
 
-
-st.set_page_config(layout="wide")
-
-
 if __name__ == "__main__":
     for i in range(50):
         print("")
