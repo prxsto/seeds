@@ -670,6 +670,9 @@ def web_tool(model):
             mesh = make_mesh.make_mesh(size, wwr, num_stories, num_units)
             st.plotly_chart(mesh, use_container_width=True)
 
+        with st.container():
+            # st.subheader('Plot options:')
+
             st.plotly_chart(fig, use_container_width=True)
             s_col1, s_col2, s_col3 = st.columns(3)
             with s_col1:
@@ -710,8 +713,6 @@ def web_tool(model):
                     help="Select data feature to color markers by",
                 )
 
-        with st.container():
-            # st.subheader('Plot options:')
             print(st.session_state.results)
             fig = plot_scatter(
                 st.session_state.results[plotd[x_axis_data]],
