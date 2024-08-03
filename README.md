@@ -6,13 +6,13 @@
 
 SEEDS (Seattle Economic and Environmental Dwelling Simulator) is a webtool for predicting energy, carbon, and associated costs of DADUs (Detached Accessory Dwelling Units) in Seattle, WA.
 
-## Contributing
-
-Feel free to create an issue/PR if you want to see anything else implemented or find any bugs. Streamlit apps can be hosted on a generic url for free while testing.
-
 ## Background
 
 This project was developed alongside my M.S. thesis at the University of Washington, exploring accessory dwelling units as an architectural response to soaring housing prices. Thesis paper can be found [here](https://digital.lib.washington.edu/researchworks/handle/1773/48656).
+
+## Contributing
+
+Feel free to create an issue/PR if you want to see anything else implemented or find any bugs. Streamlit apps can be hosted on a generic url for free while testing.
 
 ![dadu_grid](https://user-images.githubusercontent.com/15711032/162850975-3552f1c9-fe26-4948-b1ad-d573be169326.png)
 
