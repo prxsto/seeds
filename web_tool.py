@@ -664,7 +664,8 @@ def web_tool(model):
                 delta_color="inverse",
             )
 
-    if count > 0:
+    show_expander = len(st.session_state.results) > 0
+    if show_expander:
         with st.expander("Results Plot"):
             with col2:
                 mesh = make_mesh.make_mesh(size, wwr, num_stories, num_units)
